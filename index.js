@@ -12,6 +12,8 @@ app.get('/', (req, res) => {
   res.send('TravelApp API funcionando')
 })
 
+app.use('/api/auth', authRoutes)
+
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
 })
