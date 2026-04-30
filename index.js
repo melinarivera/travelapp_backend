@@ -9,7 +9,7 @@ const PORT = process.env.PORT || 3000
 app.use(express.json())
 
 app.get('/', (req, res) => {
-  res.send('TravelApp API funcionando 🚀')
+  res.send('TravelApp API funcionando')
 })
 
 app.listen(PORT, () => {
