@@ -1,15 +1,10 @@
 import express from 'express'
-import { login } from '../controllers/authController.js'
-import { verifySession } from '../middleware/authMiddleware.js'
+import { login } from '../controllers/authController.js' 
+import { register } from '../controllers/register/registerController.js'
 
 const router = express.Router()
 
 router.post('/login', login)
-router.get('/me', verifySession, (req, res) => {
-  res.status(200).json({
-    message: 'Sesión válida',
-    user: req.user
-  })
-})
+router.post('/register', register) // Adiciona a rota de registro
 
 export default router
