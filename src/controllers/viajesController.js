@@ -1,30 +1,56 @@
 import supabase from '../supabaseClient.js'
 
 export const crearViaje = async (req, res) => {
-  const { titulo, destino, fecha_inicio, fecha_fin, imagen_url } = req.body
+      console.log('Body:', req.body)
+  console.log('File:', req.file)
+  const { titulo, destino, fecha_inicio, fecha_fin } = req.body
   const titular_id = req.user.id
+  let imagen_url = null
 
-  const { data, error } = await supabase
-    .from('viajes')
-    .insert([{
-      titulo,
-      destino,
-      fecha_inicio,
-      fecha_fin,
-      imagen_url: imagen_url || null,
-      titular_id,
-      estado: 'planificacion'
-    }])
-    .select()
+  try {
+    if (req.file) {
+      const extension = req.file.originalname.split('.').pop()
+      const nombreArchivo = `${Date.now()}.${extension}`
 
-  if (error) {
-    return res.status(400).json({ error: error.message })
+      const { error: errorStorage } = await supabase.storage
+        .from('imagenes-viajes')
+        .upload(nombreArchivo, req.file.buffer, {
+          contentType: req.file.mimetype
+        })
+console.log('Error storage:', errorStorage)
+
+      if (errorStorage) throw new Error('Error al subir la imagen')
+
+      const { data } = supabase.storage
+        .from('imagenes-viajes')
+        .getPublicUrl(nombreArchivo)
+
+      imagen_url = data.publicUrl
+    }
+
+    const { data, error } = await supabase
+      .from('viajes')
+      .insert([{
+        titulo,
+        destino,
+        fecha_inicio,
+        fecha_fin,
+        imagen_url,
+        titular_id,
+        estado: 'planificacion'
+      }])
+      .select()
+
+    if (error) return res.status(400).json({ error: error.message })
+
+    res.status(201).json({
+      message: 'Viaje creado correctamente',
+      viaje: data[0]
+    })
+
+  } catch (err) {
+    res.status(500).json({ error: err.message })
   }
-
-  res.status(201).json({
-    message: 'Viaje creado correctamente',
-    viaje: data[0]
-  })
 }
 
 export const obtenerViajes = async (req, res) => {
@@ -36,9 +62,7 @@ export const obtenerViajes = async (req, res) => {
     .eq('titular_id', titular_id)
     .order('created_at', { ascending: false })
 
-  if (error) {
-    return res.status(400).json({ error: error.message })
-  }
+  if (error) return res.status(400).json({ error: error.message })
 
   res.status(200).json({ viajes: data })
 }
