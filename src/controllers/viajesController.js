@@ -1,4 +1,4 @@
-import supabase from '../supabaseClient.js'
+import supabase, { supabaseAdmin } from '../supabaseClient.js'
 
 export const crearViaje = async (req, res) => {
       console.log('Body:', req.body)
@@ -12,11 +12,11 @@ export const crearViaje = async (req, res) => {
       const extension = req.file.originalname.split('.').pop()
       const nombreArchivo = `${Date.now()}.${extension}`
 
-      const { error: errorStorage } = await supabase.storage
-        .from('imagenes-viajes')
-        .upload(nombreArchivo, req.file.buffer, {
-          contentType: req.file.mimetype
-        })
+      const { error: errorStorage } = await supabaseAdmin.storage
+  .from('imagenes-viajes')
+  .upload(nombreArchivo, req.file.buffer, {
+    contentType: req.file.mimetype
+  })
 console.log('Error storage:', errorStorage)
 
       if (errorStorage) throw new Error('Error al subir la imagen')
@@ -65,4 +65,24 @@ export const obtenerViajes = async (req, res) => {
   if (error) return res.status(400).json({ error: error.message })
 
   res.status(200).json({ viajes: data })
+}
+export const actualizarViaje = async (req, res) => {
+  const { id } = req.params
+  const { estado } = req.body
+  const titular_id = req.user.id
+
+  const { data, error } = await supabase
+    .from('viajes')
+    .update({ estado })
+    .eq('id', id)
+    .eq('titular_id', titular_id)
+    .select()
+
+  if (error) return res.status(400).json({ error: error.message })
+  if (!data.length) return res.status(404).json({ error: 'Viaje no encontrado' })
+
+  res.status(200).json({
+    message: 'Viaje actualizado',
+    viaje: data[0]
+  })
 }
