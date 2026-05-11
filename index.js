@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import authRoutes from './src/routes/authRoutes.js'
 import viajesRoutes from './src/routes/viajesRoutes.js'
+import integrantesRoutes from './src/routes/integrantesRoutes.js'
 
 dotenv.config()
 
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 })
 
 app.use('/api/auth', authRoutes)
+app.use('/api/viajes/:viajeId/integrantes', integrantesRoutes)
 
 app.use('/api/viajes', viajesRoutes)
 
