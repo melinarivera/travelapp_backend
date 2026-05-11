@@ -5,12 +5,19 @@ export const obtenerIntegrantes = async (req, res) => {
 
   const { data, error } = await supabase
     .from('integrantes')
-    .select('*, usuario:usuario_id(id, email)')
+    .select('*')
     .eq('viaje_id', viajeId)
 
   if (error) return res.status(400).json({ error: error.message })
 
-  res.status(200).json({ integrantes: data })
+  const integrantesConEmail = await Promise.all(
+    data.map(async (integrante) => {
+      const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(integrante.usuario_id)
+      return { ...integrante, email: user?.email }
+    })
+  )
+
+  res.status(200).json({ integrantes: integrantesConEmail })
 }
 
 export const agregarIntegrante = async (req, res) => {
@@ -30,22 +37,25 @@ export const agregarIntegrante = async (req, res) => {
   }
 
   // buscar usuario por email
-const { data: { users }, error: errorUsuario } = await supabaseAdmin.auth.admin.listUsers()
-const usuario = users.find(u => u.email === email)
+  const { data: { users }, error: errorUsuario } = await supabaseAdmin.auth.admin.listUsers({
+    perPage: 1000
+  })
 
-if (!usuario) {
-  return res.status(404).json({ error: 'Usuario no encontrado' })
-}
+  const usuario = users.find(u => u.email === email)
 
-// añadir integrante
-const { data, error } = await supabase
-  .from('integrantes')
-  .insert([{
-    viaje_id: viajeId,
-    usuario_id: usuario.id,
-    rol: 'integrante'
-  }])
-  .select()
+  if (!usuario) {
+    return res.status(404).json({ error: 'Usuario no encontrado' })
+  }
+
+  // añadir integrante
+  const { data, error } = await supabase
+    .from('integrantes')
+    .insert([{
+      viaje_id: viajeId,
+      usuario_id: usuario.id,
+      rol: 'integrante'
+    }])
+    .select()
 
   if (error) return res.status(400).json({ error: error.message })
 
