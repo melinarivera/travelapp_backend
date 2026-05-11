@@ -39,16 +39,40 @@ export const crearViaje = async (req, res) => {
 }
 
 export const obtenerViajes = async (req, res) => {
-  const titular_id = req.user.id
+  const user_id = req.user.id
 
-  const { data, error } = await supabase
+  const { data: viajesComoTitular, error: error1 } = await supabase
     .from('viajes')
     .select('*')
-    .eq('titular_id', titular_id)
-    .order('created_at', { ascending: false })
+    .eq('titular_id', user_id)
 
-  if (error) return res.status(400).json({ error: error.message })
-  res.status(200).json({ viajes: data })
+  if (error1) return res.status(400).json({ error: error1.message })
+
+  const { data: integrantes, error: error2 } = await supabaseAdmin
+    .from('integrantes')
+    .select('viaje_id')
+    .eq('usuario_id', user_id)
+
+  if (error2) return res.status(400).json({ error: error2.message })
+
+  let viajesComoIntegrante = []
+
+  if (integrantes.length > 0) {
+    const ids = integrantes.map(i => i.viaje_id)
+    const { data, error: error3 } = await supabaseAdmin
+      .from('viajes')
+      .select('*')
+      .in('id', ids)
+
+    if (error3) return res.status(400).json({ error: error3.message })
+    viajesComoIntegrante = data
+  }
+
+  const todos = [...viajesComoTitular, ...viajesComoIntegrante]
+  const unicos = todos.filter((v, i, arr) => arr.findIndex(x => x.id === v.id) === i)
+  const ordenados = unicos.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+
+  res.status(200).json({ viajes: ordenados })
 }
 
 export const obtenerViaje = async (req, res) => {
