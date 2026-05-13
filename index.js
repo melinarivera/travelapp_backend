@@ -4,6 +4,7 @@ import cors from 'cors'
 import authRoutes from './src/routes/authRoutes.js'
 import viajesRoutes from './src/routes/viajesRoutes.js'
 import integrantesRoutes from './src/routes/integrantesRoutes.js'
+import itinerarioRoutes from './src/routes/itinerarioRoutes.js'
 
 dotenv.config()
 
@@ -22,9 +23,10 @@ app.get('/', (req, res) => {
 
 app.use('/api/auth', authRoutes)
 app.use('/api/viajes/:viajeId/integrantes', integrantesRoutes)
-
 app.use('/api/viajes', viajesRoutes)
+app.use('/api/itinerarios', itinerarioRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
 })
+

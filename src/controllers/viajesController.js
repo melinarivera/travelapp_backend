@@ -104,3 +104,4 @@ export const actualizarViaje = async (req, res) => {
   if (!data.length) return res.status(404).json({ error: 'Viaje no encontrado' })
   res.status(200).json({ message: 'Viaje actualizado', viaje: data[0] })
 }
+
