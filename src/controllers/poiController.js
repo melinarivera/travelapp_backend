@@ -1,8 +1,8 @@
-import supabase from '../supabaseClient.js';  
+import supabase, { supabaseAdmin } from '../supabaseClient.js';
 
 export const crearLugarPOI = async (req, res) => {
   const { nombre, viaje_id } = req.body;
-  // Pegamos o ID do usuário que o seu middleware 'verifySession' já validou
+
   const creador_id = req.user.id; 
 
   if (!nombre || !viaje_id) {
@@ -15,7 +15,7 @@ export const crearLugarPOI = async (req, res) => {
       .insert([{ 
         nombre, 
         viaje_id: Number(viaje_id), 
-        creador_id // Incluindo o campo obrigatório que vimos na image_467ca0.png
+        creador_id 
       }])
       .select();
 
@@ -32,11 +32,11 @@ export const crearLugarPOI = async (req, res) => {
 };
 
 export const votarPOI = async (req, res) => {
-  // Ajustando para receber 'poiId' e 'tipo' que o seu MapaPOI.jsx envia
+
   const { poiId, tipo } = req.body; 
   const user_id = req.user.id;
 
-  // Transformando 'up' em 1 e 'down' em -1 para o cálculo matemático
+
   const valorVoto = tipo === 'up' ? 1 : -1;
 
   try {
@@ -71,7 +71,7 @@ export const listarPOIsPorViaje = async (req, res) => {
 
     if (error) return res.status(400).json({ error: error.message });
 
-    // Calculando a pontuação e separando positivos/negativos para o seu front
+  
     const poisComPontuacao = data.map(poi => {
       const votosPositivos = poi.votos_poi.filter(v => v.tipo_voto === 1).length;
       const votosNegativos = poi.votos_poi.filter(v => v.tipo_voto === -1).length;
@@ -85,11 +85,28 @@ export const listarPOIsPorViaje = async (req, res) => {
       };
     });
 
-    // Ordenação: Os mais votados primeiro
+  
     poisComPontuacao.sort((a, b) => b.puntuacion_total - a.puntuacion_total);
 
     res.status(200).json(poisComPontuacao);
   } catch (err) {
     res.status(500).json({ error: 'Erro ao buscar POIs' });
+  }
+};
+
+export const eliminarPOI = async (req, res) => {
+  const { poiId } = req.params;
+
+  try {
+    const { error } = await supabaseAdmin
+      .from('lugares_poi')
+      .delete()
+      .eq('id', poiId);
+
+    if (error) return res.status(400).json({ error: error.message });
+
+    res.status(200).json({ message: 'POI eliminado' });
+  } catch (err) {
+    res.status(500).json({ error: 'Erro interno' });
   }
 };
