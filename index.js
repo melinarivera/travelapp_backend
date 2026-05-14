@@ -5,6 +5,7 @@ import authRoutes from './src/routes/authRoutes.js'
 import viajesRoutes from './src/routes/viajesRoutes.js'
 import integrantesRoutes from './src/routes/integrantesRoutes.js'
 import documentosRoutes from './src/routes/documentosRoutes.js'
+import perfilRoutes from './src/routes/perfilRoutes.js'
 
 dotenv.config()
 
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
   res.send('TravelApp API funcionando')
 })
 
+app.use('/api/perfil', perfilRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/viajes/:viajeId/integrantes', integrantesRoutes)
 app.use('/api/viajes/:viajeId/documentos', documentosRoutes)
