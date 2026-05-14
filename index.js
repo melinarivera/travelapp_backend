@@ -7,6 +7,7 @@ import integrantesRoutes from './src/routes/integrantesRoutes.js'
 import documentosRoutes from './src/routes/documentosRoutes.js'
 import itinerarioRoutes from './src/routes/itinerarioRoutes.js'
 import poiRoutes from './src/routes/poiRoutes.js'
+import perfilRoutes from './src/routes/perfilRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -21,6 +22,7 @@ app.get('/', (req, res) => {
   res.send('TravelApp API funcionando')
 })
 
+app.use('/api/perfil', perfilRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/viajes/:viajeId/integrantes', integrantesRoutes)
 app.use('/api/viajes/:viajeId/documentos', documentosRoutes)
