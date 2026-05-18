@@ -13,8 +13,7 @@ const app = express()
 const PORT = process.env.PORT || 3000
 
 app.use(cors({
-  origin: ['http://localhost:5173', 'http://localhost:5175', 'http://localhost:5176']
-}))
+origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5175', 'http://localhost:5176', 'https://travelapp-frontend-pi.vercel.app']}))
 
 app.use(express.json())
 
@@ -30,4 +29,4 @@ app.use('/api/viajes', viajesRoutes)
 
 app.listen(PORT, () => {
   })
-  console.log(`Servidor corriendo en puerto ${PORT}`)
+console.log(`Servidor corriendo en el puerto ${PORT}`)
