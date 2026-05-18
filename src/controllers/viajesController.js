@@ -18,14 +18,14 @@ export const crearViaje = async (req, res) => {
 
       if (errorStorage) throw new Error('Error al subir la imagen')
 
-      const { data } = supabase.storage
+      const { data } = supabaseAdmin.storage
         .from('imagenes-viajes')
         .getPublicUrl(nombreArchivo)
 
       imagen_url = data.publicUrl
     }
 
-    const { data, error } = await supabase
+    const { data, error } = await supabaseAdmin
       .from('viajes')
       .insert([{ titulo, destino, fecha_inicio, fecha_fin, imagen_url, titular_id, estado: 'planificacion' }])
       .select()
@@ -41,7 +41,7 @@ export const crearViaje = async (req, res) => {
 export const obtenerViajes = async (req, res) => {
   const user_id = req.user.id
 
-  const { data: viajesComoTitular, error: error1 } = await supabase
+  const { data: viajesComoTitular, error: error1 } = await supabaseAdmin
     .from('viajes')
     .select('*')
     .eq('titular_id', user_id)
@@ -93,7 +93,7 @@ export const actualizarViaje = async (req, res) => {
   const { estado } = req.body
   const titular_id = req.user.id
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('viajes')
     .update({ estado })
     .eq('id', id)
