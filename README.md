@@ -214,13 +214,28 @@ travelapp_frontend/
 
 ## 👩‍💻 Equipo
 
-| Desarrolladora | Áreas |
+| Desarrolladoras | Áreas |
 |---------------|-------|
-| **Melina Rivera** | Backend, autenticación, dashboard, integrantes, tickets & docs, perfil, formulario de contacto |
-| **Priscila** | Itinerario, mapa & POI, puntos de interés con votación, diseño visual y paleta de colores |
+| **Melina Rivera** | Backend, autenticación, login, dashboard, integrantes, tickets & docs, perfil, formulario de contacto, Base de Datos |
+| **Priscila Nunes** | Backend, Base de Datos, registro, Itinerario, mapa & POI, puntos de interés con votación, diseño visual, cursor y paleta de colores |
 
 ---
 
 ## 📄 Licencia
 
 Proyecto académico — Bootcamp 2026.
+
+### © 2026 Melina Rivera & Priscila Nunes. Todos los derechos reservados.
+
+Este proyecto es **software propietario**. El código fuente se comparte públicamente con fines de **exhibición y portfolio personal** únicamente.
+
+**Queda estrictamente prohibido**, sin autorización escrita y expresa de las autoras:
+
+* Clonar, copiar o descargar este repositorio con fines distintos a la visualización.
+* Distribuir, sublicenciar o vender el código, en su totalidad o en parte.
+* Usar este proyecto como base para otros proyectos, ya sean personales o comerciales.
+* Modificar, descompilar o crear obras derivadas a partir de este código.
+
+Para solicitar permisos de uso, colaboración o cualquier consulta relacionada, puedes contactarnos a través de GitHub: [@melinarivera](https://github.com/melinarivera) o [@Privespoli](https://github.com/Privespoli).
+
+> El hecho de que este repositorio sea público **no implica** que se otorgue ningún tipo de licencia de uso, copia o distribución.
