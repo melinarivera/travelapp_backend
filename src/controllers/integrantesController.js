@@ -2,7 +2,7 @@ import supabase, { supabaseAdmin } from '../supabaseClient.js'
 
 export const obtenerIntegrantes = async (req, res) => {
   const { viajeId } = req.params
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('integrantes')
     .select('*')
     .eq('viaje_id', viajeId)
@@ -30,7 +30,7 @@ export const agregarIntegrante = async (req, res) => {
   const { email } = req.body
   const titular_id = req.user.id
 
-  const { data: viaje, error: errorViaje } = await supabase
+  const { data: viaje, error: errorViaje } = await supabaseAdmin
     .from('viajes')
     .select('titular_id')
     .eq('id', viajeId)
@@ -50,7 +50,7 @@ export const agregarIntegrante = async (req, res) => {
     return res.status(404).json({ error: 'Usuario no encontrado' })
   }
 
-  const { data, error } = await supabase
+  const { data, error } = await supabaseAdmin
     .from('integrantes')
     .insert([{
       viaje_id: viajeId,
@@ -67,7 +67,7 @@ export const eliminarIntegrante = async (req, res) => {
   const { viajeId, integranteId } = req.params
   const titular_id = req.user.id
 
-  const { data: viaje, error: errorViaje } = await supabase
+  const { data: viaje, error: errorViaje } = await supabaseAdmin
     .from('viajes')
     .select('titular_id')
     .eq('id', viajeId)
@@ -77,7 +77,7 @@ export const eliminarIntegrante = async (req, res) => {
     return res.status(403).json({ error: 'Solo el titular puede eliminar integrantes' })
   }
 
-  const { error } = await supabase
+  const { error } = await supabaseAdmin
     .from('integrantes')
     .delete()
     .eq('id', integranteId)
