@@ -4,12 +4,13 @@ const storage = multer.memoryStorage()
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB máximo
+  limits: { fileSize: 5 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
-    if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+    const allowed = ['image/jpeg', 'image/png', 'image/jpg', 'application/pdf']
+    if (allowed.includes(file.mimetype)) {
       cb(null, true)
     } else {
-      cb(new Error('Solo se permiten imágenes JPG o PNG'))
+      cb(new Error('Solo se permiten imágenes JPG, PNG o PDF'))
     }
   }
 })
