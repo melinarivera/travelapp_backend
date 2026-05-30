@@ -8,6 +8,8 @@ import documentosRoutes from './src/routes/documentosRoutes.js'
 import itinerarioRoutes from './src/routes/itinerarioRoutes.js'
 import poiRoutes from './src/routes/poiRoutes.js'
 import perfilRoutes from './src/routes/perfilRoutes.js'
+import checklistRoutes from './src/routes/checklistRoutes.js'
+import notasRoutes from './src/routes/notasRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -27,6 +29,8 @@ app.use('/api/perfil', perfilRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/viajes/:viajeId/integrantes', integrantesRoutes)
 app.use('/api/viajes/:viajeId/documentos', documentosRoutes)
+app.use('/api/viajes/:viajeId/checklists', checklistRoutes)
+app.use('/api/viajes/:viajeId/notas', notasRoutes)
 app.use('/api/viajes', viajesRoutes)
 app.use('/api/itinerarios', itinerarioRoutes)
 app.use('/api/poi', poiRoutes)
