@@ -28,12 +28,12 @@ export const obtenerNotas = async (req, res) => {
 
 export const crearNota = async (req, res) => {
   const { viajeId } = req.params
-  const { titulo, contenido, prioridad } = req.body
+  const { titulo, contenido, prioridad, fecha } = req.body
   const usuario_id = req.user.id
 
   const { data, error } = await supabaseAdmin
     .from('notas')
-    .insert([{ viaje_id: viajeId, usuario_id, titulo, contenido, prioridad: prioridad || 'media' }])
+    .insert([{ viaje_id: viajeId, usuario_id, titulo, contenido, prioridad: prioridad || 'media', fecha: fecha || null }])
     .select()
 
   if (error) return res.status(400).json({ error: error.message })
