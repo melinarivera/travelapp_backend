@@ -9,11 +9,21 @@ export const obtenerNotas = async (req, res) => {
     .select('*')
     .eq('viaje_id', viajeId)
     .eq('usuario_id', user_id)
-    .order('prioridad', { ascending: true })
-    .order('created_at', { ascending: false })
 
   if (error) return res.status(400).json({ error: error.message })
-  res.status(200).json({ notas: data })
+
+  const orden = { alta: 1, media: 2, baja: 3 }
+  const ordenadas = data.sort((a, b) => {
+    if (orden[a.prioridad] !== orden[b.prioridad]) {
+      return orden[a.prioridad] - orden[b.prioridad]
+    }
+    if (a.fecha && b.fecha) return new Date(a.fecha) - new Date(b.fecha)
+    if (a.fecha) return -1
+    if (b.fecha) return 1
+    return new Date(b.created_at) - new Date(a.created_at)
+  })
+
+  res.status(200).json({ notas: ordenadas })
 }
 
 export const crearNota = async (req, res) => {
