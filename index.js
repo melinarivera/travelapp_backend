@@ -10,6 +10,8 @@ import poiRoutes from './src/routes/poiRoutes.js'
 import perfilRoutes from './src/routes/perfilRoutes.js'
 import checklistRoutes from './src/routes/checklistRoutes.js'
 import notasRoutes from './src/routes/notasRoutes.js'
+import linksRoutes from './src/routes/linksRoutes.js'
+import gastosRoutes from './src/routes/gastosRoutes.js'
 
 dotenv.config()
 const app = express()
@@ -34,7 +36,10 @@ app.use('/api/viajes/:viajeId/notas', notasRoutes)
 app.use('/api/viajes', viajesRoutes)
 app.use('/api/itinerarios', itinerarioRoutes)
 app.use('/api/poi', poiRoutes)
+app.use('/api/viajes/:viajeId/links', linksRoutes)
+app.use('/api/viajes/:viajeId/gastos', gastosRoutes)
 
 app.listen(PORT, () => {
   console.log(`Servidor corriendo en http://localhost:${PORT}`)
 })
+
