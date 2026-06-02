@@ -13,6 +13,7 @@ import notasRoutes from './src/routes/notasRoutes.js'
 import linksRoutes from './src/routes/linksRoutes.js'
 import gastosRoutes from './src/routes/gastosRoutes.js'
 
+
 dotenv.config()
 const app = express()
 const PORT = process.env.PORT || 3000
