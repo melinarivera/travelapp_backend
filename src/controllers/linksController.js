@@ -12,7 +12,7 @@ export const obtenerLinks = async (req, res) => {
   if (error) return res.status(400).json({ error: error.message })
   res.status(200).json({ links: data })
 }
- 
+
 export const crearLink = async (req, res) => {
   const { viajeId } = req.params
   const { url, descripcion } = req.body
