@@ -1,5 +1,5 @@
 import express from 'express'
-import { obtenerGastos, crearGasto, eliminarGasto, obtenerIntegrantes } from '../controllers/gastosController.js'
+import { obtenerGastos, crearGasto, eliminarGasto, obtenerIntegrantes } from '../controllers/Gastoscontroller.js'
 import { verifySession } from '../middleware/authMiddleware.js'
 
 const router = express.Router({ mergeParams: true })
