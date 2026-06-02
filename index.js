@@ -11,7 +11,7 @@ import perfilRoutes from './src/routes/perfilRoutes.js'
 import checklistRoutes from './src/routes/checklistRoutes.js'
 import notasRoutes from './src/routes/notasRoutes.js'
 import linksRoutes from './src/routes/linksRoutes.js'
-import gastosRoutes from './src/routes/gastosRoutes.js'
+import gastosRoutes from './src/routes/Gastosroutes.js'
 
 
 dotenv.config()
