@@ -82,3 +82,22 @@ export const guardarPerfil = async (req, res) => {
     res.status(500).json({ error: err.message })
   }
 }
+
+export const eliminarCuenta = async (req, res) => {
+  const usuario_id = req.user.id
+
+  try {
+    await supabaseAdmin
+      .from('perfiles')
+      .delete()
+      .eq('id', usuario_id)
+
+    const { error } = await supabaseAdmin.auth.admin.deleteUser(usuario_id)
+
+    if (error) throw new Error(error.message)
+
+    res.status(200).json({ mensaje: 'Cuenta eliminada correctamente' })
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+}
