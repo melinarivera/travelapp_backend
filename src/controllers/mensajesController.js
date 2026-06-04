@@ -2,7 +2,6 @@ import { supabaseAdmin } from '../supabaseClient.js'
 
 export const obtenerMensajes = async (req, res) => {
   const { viajeId } = req.params
-  console.log('=== obtenerMensajes ===', viajeId)
 
   const { data, error } = await supabaseAdmin
     .from('mensajes')
@@ -37,8 +36,6 @@ export const enviarMensaje = async (req, res) => {
   const { viajeId } = req.params
   const { contenido, respuesta_a } = req.body
   const usuario_id = req.user.id
-  console.log('=== enviarMensaje ===')
-  console.log('viajeId:', viajeId, 'usuario_id:', usuario_id, 'contenido:', contenido)
 
   if (!contenido?.trim()) return res.status(400).json({ error: 'El mensaje no puede estar vacío' })
 
