@@ -14,18 +14,24 @@ export const obtenerMensajes = async (req, res) => {
   const userIds = [...new Set(data.map(m => m.usuario_id))]
   const { data: perfiles } = await supabaseAdmin
     .from('perfiles')
-    .select('id, nombre')
+    .select('id, nombre, foto_url')
     .in('id', userIds)
 
   const perfilesMap = {}
-  perfiles?.forEach(p => { perfilesMap[p.id] = p.nombre })
+  perfiles?.forEach(p => { perfilesMap[p.id] = { nombre: p.nombre, foto_url: p.foto_url } })
 
   const mensajesConNombre = data.map(m => ({
     ...m,
-    perfil: { nombre: perfilesMap[m.usuario_id] || null },
+    perfil: {
+      nombre: perfilesMap[m.usuario_id]?.nombre || null,
+      foto_url: perfilesMap[m.usuario_id]?.foto_url || null
+    },
     respuesta: m.respuesta ? {
       ...m.respuesta,
-      perfil: { nombre: perfilesMap[m.respuesta.usuario_id] || null }
+      perfil: {
+        nombre: perfilesMap[m.respuesta.usuario_id]?.nombre || null,
+        foto_url: perfilesMap[m.respuesta.usuario_id]?.foto_url || null
+      }
     } : null
   }))
 

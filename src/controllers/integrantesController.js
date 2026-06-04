@@ -12,13 +12,14 @@ export const obtenerIntegrantes = async (req, res) => {
       const { data: { user } } = await supabaseAdmin.auth.admin.getUserById(integrante.usuario_id)
       const { data: perfil } = await supabaseAdmin
         .from('perfiles')
-        .select('nombre')
+        .select('nombre, foto_url')
         .eq('id', integrante.usuario_id)
         .single()
-      return { 
-        ...integrante, 
+      return {
+        ...integrante,
         email: user?.email,
-        nombre: perfil?.nombre || null
+        nombre: perfil?.nombre || null,
+        foto_url: perfil?.foto_url || null
       }
     })
   )
