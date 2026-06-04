@@ -18,7 +18,7 @@ export const obtenerPerfil = async (req, res) => {
 
 export const guardarPerfil = async (req, res) => {
   const usuario_id = req.user.id
-  const { nombre, telefono, fecha_nacimiento, ubicacion } = req.body
+  const { nombre, telefono, fecha_nacimiento, ubicacion, tarjeta_estudiante, discapacidad, persona_mayor } = req.body
   let foto_url = null
 
   try {
@@ -51,7 +51,7 @@ export const guardarPerfil = async (req, res) => {
     let data, error
 
     if (perfilExistente) {
-      const updates = { nombre, telefono, fecha_nacimiento, ubicacion }
+      const updates = { nombre, telefono, fecha_nacimiento, ubicacion, tarjeta_estudiante, discapacidad, persona_mayor }
       if (foto_url) updates.foto_url = foto_url
 
       const result = await supabaseAdmin
@@ -63,7 +63,7 @@ export const guardarPerfil = async (req, res) => {
       data = result.data
       error = result.error
     } else {
-      const insert = { id: usuario_id, nombre, telefono, fecha_nacimiento, ubicacion }
+      const insert = { id: usuario_id, nombre, telefono, fecha_nacimiento, ubicacion, tarjeta_estudiante, discapacidad, persona_mayor }
       if (foto_url) insert.foto_url = foto_url
 
       const result = await supabaseAdmin
