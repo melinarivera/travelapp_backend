@@ -53,7 +53,19 @@ export const obtenerDocumentos = async (req, res) => {
 
   if (error) return res.status(400).json({ error: error.message })
 
-  res.status(200).json({ documentos: data })
+  // Busca os nomes dos criadores
+  const ids = [...new Set(data.map(d => d.usuario_id).filter(Boolean))]
+  const { data: perfis } = await supabaseAdmin
+    .from('perfiles')
+    .select('id, nombre')
+    .in('id', ids)
+
+  const documentosComNome = data.map(doc => ({
+    ...doc,
+    criador_nombre: perfis?.find(p => p.id === doc.usuario_id)?.nombre || 'Alguien'
+  }))
+
+  res.status(200).json({ documentos: documentosComNome })
 }
 
 export const eliminarDocumento = async (req, res) => {

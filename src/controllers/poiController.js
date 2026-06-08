@@ -61,33 +61,36 @@ export const listarPOIsPorViaje = async (req, res) => {
   try {
     const { data, error } = await supabase
       .from('lugares_poi')
-      .select(`
-        *,
-        votos_poi (
-          tipo_voto
-        )
-      `)
+      .select(`*, votos_poi(tipo_voto)`)
       .eq('viaje_id', viajeId);
 
     if (error) return res.status(400).json({ error: error.message });
 
-  
+    // Busca os nomes dos criadores
+    const ids = [...new Set(data.map(p => p.creador_id).filter(Boolean))]
+    const { data: perfis } = await supabaseAdmin
+      .from('perfiles')
+      .select('id, nombre')
+      .in('id', ids)
+      console.log("🔍 ids criadores:", ids)
+console.log("🔍 perfis encontrados:", perfis)
+
     const poisComPontuacao = data.map(poi => {
       const votosPositivos = poi.votos_poi.filter(v => v.tipo_voto === 1).length;
       const votosNegativos = poi.votos_poi.filter(v => v.tipo_voto === -1).length;
       const total = poi.votos_poi.reduce((acc, voto) => acc + voto.tipo_voto, 0);
-      
+      const criador = perfis?.find(p => p.id === poi.creador_id)
+
       return {
         ...poi,
         votos_positivos: votosPositivos,
         votos_negativos: votosNegativos,
-        puntuacion_total: total
+        puntuacion_total: total,
+        criador_nombre: criador?.nombre || 'Alguien'
       };
     });
 
-  
     poisComPontuacao.sort((a, b) => b.puntuacion_total - a.puntuacion_total);
-
     res.status(200).json(poisComPontuacao);
   } catch (err) {
     res.status(500).json({ error: 'Erro ao buscar POIs' });

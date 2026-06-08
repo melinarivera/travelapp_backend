@@ -1,6 +1,7 @@
 import express from 'express'
-import { login, registro } from '../controllers/authController.js'
+import { login, registro, recuperarPassword } from '../controllers/authController.js'
 import { verifySession } from '../middleware/authMiddleware.js'
+
 
 const router = express.Router()
 
@@ -12,5 +13,5 @@ router.get('/me', verifySession, (req, res) => {
     user: req.user
   })
 })
-
+router.post('/recuperar-password', recuperarPassword)
 export default router
