@@ -90,12 +90,17 @@ export const obtenerViaje = async (req, res) => {
 
 export const actualizarViaje = async (req, res) => {
   const { id } = req.params
-  const { estado } = req.body
+  const { estado, fecha_inicio, fecha_fin } = req.body
   const titular_id = req.user.id
+
+  const campos = {}
+  if (estado) campos.estado = estado
+  if (fecha_inicio) campos.fecha_inicio = fecha_inicio
+  if (fecha_fin) campos.fecha_fin = fecha_fin
 
   const { data, error } = await supabaseAdmin
     .from('viajes')
-    .update({ estado })
+    .update(campos)
     .eq('id', id)
     .eq('titular_id', titular_id)
     .select()
