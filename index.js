@@ -13,7 +13,7 @@ import notasRoutes from './src/routes/notasRoutes.js'
 import mensajesRoutes from './src/routes/mensajesRoutes.js'
 import dependientesRoutes from './src/routes/dependientesRoutes.js'
 import linksRoutes from './src/routes/linksRoutes.js'
-import gastosRoutes from './src/routes/Gastosroutes.js'
+import gastosRoutes from './src/routes/gastosRoutes.js'
 
 dotenv.config()
 const app = express()
